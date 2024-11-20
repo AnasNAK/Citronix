@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgresql
+    networks:
+      - app-network
+    environment:
+      POSTGRES_DB: dev_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: anas
+    ports:
+      - '5434:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: citronix-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/dev_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: anas
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target:/app
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
