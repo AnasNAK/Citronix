@@ -17,7 +17,5 @@ public class ResponseHarvestTreeDTO {
 
     private ResponseHarvestSharedDTO Harvest;
 
-    private Long TreeId;
-
     private Double quantity;
 }
