@@ -13,13 +13,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UpdateSaleDTO {
     @NotNull(message = "unitPrice should not be null")
-    @NotBlank(message = "you need to add a unitPrice")
     private Double unitPrice;
 
     @NotBlank(message = "you need to add a saleDate")
     private LocalDate saleDate;
 
-    @NotBlank(message = "you need to add a quantity")
     @NotNull(message = "quantity should not be null")
     private Double quantity;
 

@@ -12,14 +12,11 @@ import lombok.NoArgsConstructor;
 public class CreateHarvestTreeDTO {
 
     @NotNull(message = "harvestId should not be null ")
-    @NotBlank(message = "you need to add a harvest id  ")
     private Long harvestId;
 
     @NotNull(message = "TreeId should not be null ")
-    @NotBlank(message = "you need to add a Tree Id ")
     private Long TreeId;
 
     @NotNull(message = "quantity should not be null ")
-    @NotBlank(message = "you need to add a quantity")
     private Double quantity;
 }

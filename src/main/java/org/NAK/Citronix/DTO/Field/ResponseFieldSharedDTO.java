@@ -17,5 +17,5 @@ public class ResponseFieldSharedDTO {
 
     private Double area;
 
-    private LocalDate createDate;
+    private LocalDate creationDate;
 }

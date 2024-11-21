@@ -26,10 +26,10 @@ public class Farm {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "totalArea")
+    @Column(name = "total_area")
     private Double totalArea;
 
-    @Column(name = "creationDate")
+    @Column(name = "creation_date")
     private LocalDate creationDate;
 
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL ,fetch = FetchType.EAGER)

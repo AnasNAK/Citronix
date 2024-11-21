@@ -7,7 +7,7 @@ import org.NAK.Citronix.DTO.Farm.UpdateFarmDTO;
 import org.NAK.Citronix.Entity.Farm;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring" )
 public interface FarmMapper {
 
     ResponseFarmSharedDTO toResponseFarmSharedDTO(Farm farm);

@@ -24,7 +24,7 @@ public class Field {
     @Column(name = "area")
     private Double area;
 
-    @Column(name = "creationDate")
+    @Column(name = "creation_date")
     private LocalDate creationDate;
 
     @ManyToOne(fetch = FetchType.EAGER)

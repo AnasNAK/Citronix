@@ -22,7 +22,7 @@ public class ResponseFieldDTO {
 
     private Double area;
 
-    private LocalDate createDate;
+    private LocalDate creationDate;
 
     private ResponseFarmSharedDTO farm;
 

@@ -18,12 +18,11 @@ public class CreateFieldDTO {
     @NotBlank(message = "field should have a name")
     private String name;
 
-    @NotBlank(message = "field should have an area")
     @NotNull(message = "this field should have an area not null")
     @Min(value =1000 ,message ="this field should have over than 1000 m" )
     private Double area;
 
     @NotBlank(message = "field should have an creationDate")
-    private LocalDate createDate;
+    private LocalDate creationDate;
 
 }
