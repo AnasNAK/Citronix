@@ -15,6 +15,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateFieldDTO {
 
+    @NotNull(message = "you most add the farm id")
+    private Long farmId;
+
     @NotBlank(message = "field should have a name")
     private String name;
 
@@ -22,7 +25,6 @@ public class CreateFieldDTO {
     @Min(value =1000 ,message ="this field should have over than 1000 m" )
     private Double area;
 
-    @NotBlank(message = "field should have an creationDate")
-    private LocalDate creationDate;
+
 
 }

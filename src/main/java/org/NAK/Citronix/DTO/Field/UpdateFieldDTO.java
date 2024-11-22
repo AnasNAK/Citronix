@@ -1,5 +1,6 @@
 package org.NAK.Citronix.DTO.Field;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,8 +17,7 @@ public class UpdateFieldDTO {
     private String name;
 
     @NotNull(message = "this field should have an area not null")
+    @Min(value =1000 ,message ="this field should have over than 1000 m" )
     private Double area;
 
-    @NotBlank(message = "field should have an creationDate")
-    private LocalDate creationDate;
 }
