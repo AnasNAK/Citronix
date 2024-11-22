@@ -35,4 +35,7 @@ public class Harvest {
     @OneToMany(mappedBy = "harvest" ,fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
     private List<Sale> sales;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Field field;
+
 }

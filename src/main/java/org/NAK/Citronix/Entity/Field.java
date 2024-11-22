@@ -33,4 +33,7 @@ public class Field {
 
     @OneToMany(mappedBy = "field" , cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     private List<Tree> trees;
+
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Harvest> harvests;
 }
