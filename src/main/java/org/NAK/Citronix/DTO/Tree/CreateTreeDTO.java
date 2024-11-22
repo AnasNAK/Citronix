@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.NAK.Citronix.DTO.Field.ResponseFieldSharedDTO;
 
 import java.time.LocalDate;
 
@@ -14,8 +13,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateTreeDTO {
 
-    @NotBlank(message = "tree should have a planing date")
     @NotNull(message = "tree should not be null")
     private LocalDate planingDate;
+
+    @NotNull(message = "Tree should have a field Id")
+    private Long fieldId;
 
 }

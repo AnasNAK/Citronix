@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateTreeDTO {
-    @NotBlank(message = "tree should have a planing date")
     @NotNull(message = "tree should not be null")
     private LocalDate planingDate;
 }
