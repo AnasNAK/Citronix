@@ -68,7 +68,7 @@ public class FieldServiceImpl implements FieldService {
         if (!fieldRepository.existsById(id)) {
             throw new EntityNotFoundException("Field with Id :" + id + "not found");
         }
-        fieldRepository.deleteById(id);
+        fieldRepository.deleteByIdWithQuery(id);
     }
 
     @Override

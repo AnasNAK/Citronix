@@ -70,7 +70,7 @@ public class TreeServiceImpl implements TreeService {
         if (!treerepository.existsById(id)) {
             throw new IllegalArgumentException("Tree with Id :" + id + " not found");
         }
-        treerepository.deleteById(id);
+        treerepository.deleteByIdWithQuery(id);
 
     }
 

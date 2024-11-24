@@ -36,6 +36,7 @@ public class Harvest {
     private List<Sale> sales;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "field_id")
     private Field field;
 
 }
