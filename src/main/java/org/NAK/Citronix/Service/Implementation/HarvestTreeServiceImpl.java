@@ -83,7 +83,7 @@ public class HarvestTreeServiceImpl implements HarvestTreeService {
     }
 
     @Override
-    public List<ResponseHarvestTreeDTO> getHarvestTrees(EmbeddedIds embeddedIds) {
+    public List<ResponseHarvestTreeDTO> getHarvestTrees() {
         return harvestTreeRepository.findAll()
                 .stream()
                 .map(harvestTreeMapper::toResponseHarvestTreeDTO)

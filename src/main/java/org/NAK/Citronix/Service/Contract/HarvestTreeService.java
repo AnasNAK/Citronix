@@ -14,6 +14,6 @@ public interface HarvestTreeService {
     ResponseHarvestTreeDTO updateHarvestTree(UpdateHarvestTreeDTO updateHarvestTreeDTO);
     ResponseHarvestTreeDTO getHarvestTree(EmbeddedIds embeddedIds);
     void deleteHarvestTree(EmbeddedIds embeddedIds);
-    List<ResponseHarvestTreeDTO> getHarvestTrees(EmbeddedIds embeddedIds);
+    List<ResponseHarvestTreeDTO> getHarvestTrees();
 
 }
