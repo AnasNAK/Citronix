@@ -1,6 +1,5 @@
 package org.NAK.Citronix.DTO.Harvest;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +19,8 @@ public class ResponseHarvestDTO {
     private Long id;
 
     private LocalDate harvestDate;
+
+    private Double TotalQuantity;
 
     private Status status;
 

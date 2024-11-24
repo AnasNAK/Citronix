@@ -1,6 +1,7 @@
 package org.NAK.Citronix.DTO.Harvest;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateHarvestDTO {
 
-    @NotBlank(message = "harvest should have a harvest date")
+    @NotNull(message = "harvest should have a harvest date")
     private LocalDate harvestDate;
 
-    @NotBlank(message = "harvest should have a season PENDING or INPROGRESS or FINISHED")
+    @NotNull(message = "you need to add a field Id")
+    private Long fieldId;
+
+    @NotNull(message = "harvest should have a season PENDING or INPROGRESS or FINISHED")
     private Status status;
 
-    @NotBlank(message = "harvest should have a season SPRING or SUMMER or AUTUMN or WINTER")
+    @NotNull(message = "harvest should have a season SPRING or SUMMER or AUTUMN or WINTER")
     private Season season;
 
 }

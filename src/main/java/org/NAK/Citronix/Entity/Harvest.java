@@ -2,6 +2,7 @@ package org.NAK.Citronix.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.NAK.Citronix.Enum.Season;
@@ -20,11 +21,14 @@ public class Harvest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "harvestDate")
+    @Column(name = "harvest_date")
     private LocalDate harvestDate;
 
     @Column(name = "season")
     private Season season;
+
+    @Column(name = "total_quantity")
+    private Double totalQuantity ;
 
     @Column(name = "status")
     private Status status;

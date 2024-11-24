@@ -17,6 +17,8 @@ public class ResponseHarvestSharedDTO {
 
     private LocalDate harvestDate;
 
+    private Double TotalQuantity;
+
     private Status status;
 
     private Season season;
