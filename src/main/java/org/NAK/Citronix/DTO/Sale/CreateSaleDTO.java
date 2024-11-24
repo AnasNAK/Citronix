@@ -13,10 +13,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateSaleDTO {
 
+    @NotNull(message = "you need to add a harvest Id ")
+    private Long harvestId;
+
     @NotNull(message = "unitPrice should not be null")
     private Double unitPrice;
 
-    @NotBlank(message = "you need to add a saleDate")
+    @NotNull(message = "you need to add a saleDate")
     private LocalDate saleDate;
 
     @NotNull(message = "quantity should not be null")

@@ -5,6 +5,9 @@ import org.NAK.Citronix.Entity.HarvestTree;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface HarvestTreeRepository extends JpaRepository<HarvestTree, EmbeddedIds>{
+    Optional<HarvestTree> findByHarvestIdAndTreeId(Long harvestId, Long treeId);
 }
