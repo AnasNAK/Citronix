@@ -54,4 +54,9 @@ public class SaleController {
         saleService.deleteSale(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/revenue/{harvestId}")
+    public ResponseEntity<Double> getTotalRevenue(@PathVariable Long harvestId) {
+        double totalRevenue = saleService.calculateTotalRevenue(harvestId);
+        return ResponseEntity.ok(totalRevenue);
+    }
 }

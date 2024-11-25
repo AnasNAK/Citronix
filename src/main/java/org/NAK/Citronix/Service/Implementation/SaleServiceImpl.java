@@ -14,6 +14,7 @@ import org.NAK.Citronix.Repository.SaleRepository;
 import org.NAK.Citronix.Service.Contract.SaleService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,10 @@ public class SaleServiceImpl  implements SaleService {
 
         Harvest harvest = harvestRepository.findById(createSaleDTO.getHarvestId())
                 .orElseThrow(()-> new RuntimeException("Harvest with Id :"+ createSaleDTO.getHarvestId() +"not found"));
+
+        validateHarvestReadyForSale(harvest);
+
+        validateAvailableQuantity(harvest, createSaleDTO.getQuantity());
 
         Sale sale = saleMapper.toSale(createSaleDTO);
         sale.setHarvest(harvest);
@@ -77,5 +82,34 @@ public class SaleServiceImpl  implements SaleService {
                 .stream()
                 .map(saleMapper::toResponseSaleDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public double calculateTotalRevenue(Long harvestId) {
+        List<Sale> sales = saleRepository.findByHarvestId(harvestId);
+
+        return sales.stream()
+                .mapToDouble(this::calculateRevenue)
+                .sum();
+    }
+
+    private double calculateRevenue(Sale sale) {
+        return sale.getQuantity() * sale.getUnitPrice();
+    }
+
+    private void validateAvailableQuantity(Harvest harvest, Double requestedQuantity) {
+        double availableQuantity = harvest.getTotalQuantity();
+
+        if (requestedQuantity > availableQuantity) {
+            throw new IllegalArgumentException("Not enough quantity available for this harvest. Available: " + availableQuantity + ", Requested: " + requestedQuantity);
+        }
+    }
+
+    private void validateHarvestReadyForSale(Harvest harvest) {
+        LocalDate currentDate = LocalDate.now();
+
+        if (currentDate.isBefore(harvest.getHarvestDate().plusMonths(3))) {
+            throw new IllegalArgumentException("The harvest is not ready for sale yet. Please wait until " + harvest.getHarvestDate().plusMonths(3));
+        }
     }
 }

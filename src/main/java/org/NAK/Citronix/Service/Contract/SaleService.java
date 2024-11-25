@@ -13,4 +13,5 @@ public interface SaleService {
     ResponseSaleDTO getSale(Long id);
     void deleteSale(Long id);
     List<ResponseSaleDTO> getSales();
+    double calculateTotalRevenue(Long harvestId);
 }
