@@ -14,4 +14,7 @@ import java.time.LocalDate;
 public class UpdateTreeDTO {
     @NotNull(message = "tree should not be null")
     private LocalDate planingDate;
+
+    private Long fieldId;
+
 }

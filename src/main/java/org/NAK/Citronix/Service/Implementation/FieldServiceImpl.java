@@ -13,6 +13,8 @@ import org.NAK.Citronix.Repository.FarmRepository;
 import org.NAK.Citronix.Repository.FieldRepository;
 import org.NAK.Citronix.Service.Contract.FieldService;
 import org.NAK.Citronix.Validation.FieldValidation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,10 +98,9 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public List<ResponseFieldDTO> getFields() {
-        return fieldRepository.findAll()
-                .stream()
-                .map(fieldMapper::toResponseFieldDTO)
-                .collect(Collectors.toList());
+    public Page<ResponseFieldDTO> getFields(Pageable pageable) {
+        return fieldRepository.findAll(pageable)
+                .map(fieldMapper::toResponseFieldDTO);
+
     }
 }

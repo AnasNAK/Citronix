@@ -6,6 +6,8 @@ import org.NAK.Citronix.DTO.Field.ResponseFieldDTO;
 import org.NAK.Citronix.DTO.Field.ResponseFieldSharedDTO;
 import org.NAK.Citronix.DTO.Field.UpdateFieldDTO;
 import org.NAK.Citronix.Service.Contract.FieldService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,8 @@ public class FieldController {
 
 
     @GetMapping
-    public ResponseEntity<List<ResponseFieldDTO>> getFields() {
-        List<ResponseFieldDTO> fields = fieldService.getFields();
+    public ResponseEntity<Page<ResponseFieldDTO>> getFields(Pageable pageable) {
+        Page<ResponseFieldDTO> fields = fieldService.getFields(pageable);
 
         if (fields.isEmpty()) {
             return ResponseEntity.noContent().build();
