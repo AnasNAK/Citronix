@@ -13,4 +13,6 @@ public interface TreeService {
     ResponseTreeDTO getTree(Long id);
     void deleteTree(Long id);
     List<ResponseTreeDTO> getTrees();
+    double calculateTotalProductivity(Long fieldId);
+    double calculateAge(Long id);
 }

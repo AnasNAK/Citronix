@@ -25,7 +25,7 @@ public class TreeValidator {
 
         if (field.getTrees().size() >= maxAllowedTrees) {
             throw new IllegalArgumentException(
-                    String.format("Field '%s' exceeds maximum tree density of %d trees  per hectare and this field can have just %d trees.",
+                    String.format("Field '%s' exceeds maximum tree density of %d trees per hectare and this field can have just %d trees.",
                             field.getName(), TREES_PER_HECTARE ,maxAllowedTrees));
         }
     }

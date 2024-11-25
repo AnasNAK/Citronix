@@ -12,6 +12,7 @@ import org.NAK.Citronix.Mapper.HarvestMapper;
 import org.NAK.Citronix.Repository.FieldRepository;
 import org.NAK.Citronix.Repository.HarvestRepository;
 import org.NAK.Citronix.Service.Contract.HarvestService;
+import org.NAK.Citronix.Validation.HarvestValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class HarvestServiceImpl implements HarvestService {
 
     private final HarvestMapper harvestMapper;
 
+    private final HarvestValidator harvestValidator;
 
 
     @Override
@@ -34,7 +36,11 @@ public class HarvestServiceImpl implements HarvestService {
         Field field = fieldRepository.findById(createHarvestDTO.getFieldId())
                 .orElseThrow(() -> new EntityNotFoundException("field with id:"+createHarvestDTO.getFieldId() + "not found"));
 
+        List<Harvest> existingHarvests = harvestRepository.findBySeason(createHarvestDTO.getSeason());
+
         Harvest harvest = harvestMapper.toHarvest(createHarvestDTO);
+
+        harvestValidator.validateNewHarvest(harvest, existingHarvests);
 
         harvest.setField(field);
         harvest.setTotalQuantity(0.0);
@@ -50,7 +56,11 @@ public class HarvestServiceImpl implements HarvestService {
 
         Field filed = fieldRepository.findById(existedHarvest.getField().getId()).orElseThrow(() -> new EntityNotFoundException("field with id:"+id + "not found"));
 
+        List<Harvest> existingHarvests = harvestRepository.findBySeason(updateHarvestDTO.getSeason());
+
         Harvest harvest = harvestMapper.toHarvest(updateHarvestDTO);
+
+        harvestValidator.validateSeasonForUpdate(harvest.getSeason(), id, existingHarvests);
 
         harvest.setField(filed);
         harvest.setId(existedHarvest.getId());

@@ -14,6 +14,8 @@ import org.NAK.Citronix.Service.Contract.TreeService;
 import org.NAK.Citronix.Validation.TreeValidator;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,4 +92,40 @@ public class TreeServiceImpl implements TreeService {
                 .map(treemapper::toResponseTreeDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public double calculateTotalProductivity(Long fieldId) {
+        List<Tree> trees = treerepository.findByFieldId(fieldId);
+        return trees
+                .stream()
+                .mapToDouble(this::calculateProductivity).sum();
+    }
+
+    @Override
+    public double calculateAge(Long id) {
+        Tree tree = treerepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Tree with Id :" + id + " not found"));
+
+      return getAge(tree);
+    }
+
+    private int getAge(Tree tree) {
+        return Period.between(tree.getPlaningDate(), LocalDate.now()).getYears();
+    }
+
+    private double calculateProductivity(Tree tree) {
+        int ageInYears = getAge(tree);
+
+        if (ageInYears > 20) {
+            return 0;
+        }
+
+        if (ageInYears < 3) return 2.5;
+        if (ageInYears <= 10) return 12;
+        return 20;
+    }
+
+
+
+
 }

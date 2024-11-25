@@ -60,4 +60,17 @@ public class TreeController {
         treeService.deleteTree(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/productivity/{fieldId}")
+    public ResponseEntity<Double> getProductivity(@PathVariable Long fieldId) {
+        Double fieldProductivity = treeService.calculateTotalProductivity(fieldId);
+        return new ResponseEntity<>(fieldProductivity, HttpStatus.OK);
+    }
+
+    @GetMapping("/age/{id}")
+    public ResponseEntity<String> calculateAge(@PathVariable Long id) {
+        int age = (int) treeService.calculateAge(id);
+        String message = String.format("The age of the tree is %d years.", age);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
