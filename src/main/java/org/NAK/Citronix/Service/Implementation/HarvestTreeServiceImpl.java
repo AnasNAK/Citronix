@@ -17,6 +17,7 @@ import org.NAK.Citronix.Repository.TreeRepository;
 import org.NAK.Citronix.Service.Contract.HarvestTreeService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +37,13 @@ public class HarvestTreeServiceImpl implements HarvestTreeService {
 
         Tree tree = treeRepository.findById(createHarvestTreeDTO.getTreeId()).orElseThrow(() -> new EntityNotFoundException("Tree with Id: "+createHarvestTreeDTO.getTreeId() +"not found"));
 
-        System.out.println(createHarvestTreeDTO);
+        validateHarvestFrequency(tree);
+
         HarvestTree harvestTree = harvestTreeMapper.toHarvestTree(createHarvestTreeDTO);
 
-        System.out.println(harvestTree);
+        updateTotalQuantity(harvest);
+
+
         harvestTree.setTree(tree);
         harvestTree.setHarvest(harvest);
         harvestTreeRepository.save(harvestTree);
@@ -62,7 +66,12 @@ public class HarvestTreeServiceImpl implements HarvestTreeService {
 
         HarvestTree savedHarvestTree = harvestTreeMapper.toHarvestTree(updateHarvestTreeDTO);
 
+        Harvest harvest = harvestTree.getHarvest();
+
         harvestTreeRepository.save(savedHarvestTree);
+
+        updateTotalQuantity(harvest);
+
 
         return harvestTreeMapper.toResponseHarvestTreeDTO(savedHarvestTree);
 
@@ -82,7 +91,11 @@ public class HarvestTreeServiceImpl implements HarvestTreeService {
         HarvestTree harvestTree = harvestTreeRepository.findByHarvestIdAndTreeId(embeddedIds.getHarvestId(),embeddedIds.getTreeId())
             .orElseThrow(()-> new EntityNotFoundException("HarvestTree with HarvestId: "+embeddedIds.getHarvestId() +"and TreeId: "+embeddedIds.getTreeId() +"not found"));
 
+        Harvest harvest = harvestTree.getHarvest();
+
         harvestTreeRepository.delete(harvestTree);
+
+        updateTotalQuantity(harvest);
     }
 
     @Override
@@ -92,4 +105,32 @@ public class HarvestTreeServiceImpl implements HarvestTreeService {
                 .map(harvestTreeMapper::toResponseHarvestTreeDTO)
                 .collect(Collectors.toList());
     }
+
+    private void validateHarvestFrequency(Tree tree) {
+        List<HarvestTree> existingHarvestTrees = harvestTreeRepository.findByTreeId(tree.getId());
+
+        if (!existingHarvestTrees.isEmpty()) {
+            LocalDate lastHarvestDate = existingHarvestTrees.stream()
+                    .map(harvestTree -> harvestRepository.findById(harvestTree.getHarvest().getId())
+                            .orElseThrow(() -> new IllegalArgumentException("Associated harvest not found")))
+                    .map(Harvest::getHarvestDate)
+                    .max(LocalDate::compareTo)
+                    .orElseThrow(() -> new IllegalArgumentException("No previous harvest dates found for this tree"));
+
+            if (lastHarvestDate.plusMonths(3).isAfter(LocalDate.now())) {
+                throw new IllegalArgumentException("Cannot create a new harvest for this tree. Please wait until three months have passed since the last harvest on " + lastHarvestDate);
+            }
+        }
+    }
+
+    private void updateTotalQuantity(Harvest harvest) {
+        double totalQuantity = harvest.getHarvestTrees().stream()
+                .mapToDouble(HarvestTree::getQuantity)
+                .sum();
+
+        harvest.setTotalQuantity(totalQuantity);
+
+        harvestRepository.save(harvest);
+    }
+
 }
