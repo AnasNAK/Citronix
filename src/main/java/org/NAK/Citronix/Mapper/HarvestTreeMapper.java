@@ -16,7 +16,11 @@ public interface HarvestTreeMapper {
 
     ResponseHarvestTreeSharedDTO toResponseHarvestTreeSharedDTO(HarvestTree harvestTree);
 
+    @Mapping(target = "embeddedIds.harvestId" , source = "harvestId")
+    @Mapping(target = "embeddedIds.treeId" , source = "treeId")
     HarvestTree toHarvestTree(CreateHarvestTreeDTO createHarvestTreeDTO);
 
+    @Mapping(target = "embeddedIds.harvestId" , source = "harvestId")
+    @Mapping(target = "embeddedIds.treeId" , source = "treeId")
     HarvestTree toHarvestTree(UpdateHarvestTreeDTO updateHarvestTreeDTO);
 }

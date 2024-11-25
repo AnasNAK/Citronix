@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/harvestTrees")
+@RequestMapping("/api/harvestTrees")
 public class HarvestTreeController {
 
     private final HarvestTreeService harvestTreeService;

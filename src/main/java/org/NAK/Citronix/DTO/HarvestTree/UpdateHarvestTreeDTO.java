@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateHarvestTreeDTO {
 
-    @NotNull(message = "harvestId should not be null ")
+//    @NotNull(message = "harvestId should not be null ")
     private Long harvestId;
 
-    @NotNull(message = "TreeId should not be null ")
-    private Long TreeId;
+//    @NotNull(message = "TreeId should not be null ")
+    private Long treeId;
 
     @NotNull(message = "quantity should not be null ")
     private Double quantity;

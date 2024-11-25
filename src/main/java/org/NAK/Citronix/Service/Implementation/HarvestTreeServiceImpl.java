@@ -36,11 +36,14 @@ public class HarvestTreeServiceImpl implements HarvestTreeService {
 
         Tree tree = treeRepository.findById(createHarvestTreeDTO.getTreeId()).orElseThrow(() -> new EntityNotFoundException("Tree with Id: "+createHarvestTreeDTO.getTreeId() +"not found"));
 
+        System.out.println(createHarvestTreeDTO);
         HarvestTree harvestTree = harvestTreeMapper.toHarvestTree(createHarvestTreeDTO);
 
+        System.out.println(harvestTree);
         harvestTree.setTree(tree);
         harvestTree.setHarvest(harvest);
         harvestTreeRepository.save(harvestTree);
+
 
         return harvestTreeMapper.toResponseHarvestTreeSharedDTO(harvestTree);
 

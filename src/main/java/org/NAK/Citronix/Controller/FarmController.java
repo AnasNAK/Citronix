@@ -6,6 +6,8 @@ import org.NAK.Citronix.DTO.Farm.ResponseFarmDTO;
 import org.NAK.Citronix.DTO.Farm.ResponseFarmSharedDTO;
 import org.NAK.Citronix.DTO.Farm.UpdateFarmDTO;
 import org.NAK.Citronix.Service.Contract.FarmService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,9 @@ public class FarmController {
 
     }
     @GetMapping
-    public ResponseEntity<List<ResponseFarmDTO>> getAllFarms(){
+    public ResponseEntity<Page<ResponseFarmDTO>> getAllFarms(Pageable pageable){
 
-        List<ResponseFarmDTO> farms = farmService.getFarms();
+        Page<ResponseFarmDTO> farms = farmService.getFarms(pageable);
 
         if (farms.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

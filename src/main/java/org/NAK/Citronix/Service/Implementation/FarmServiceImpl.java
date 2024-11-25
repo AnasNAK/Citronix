@@ -12,6 +12,9 @@ import org.NAK.Citronix.Mapper.FarmMapper;
 import org.NAK.Citronix.Repository.FarmRepository;
 import org.NAK.Citronix.SearchCriteria.FarmSearch;
 import org.NAK.Citronix.Service.Contract.FarmService;
+import org.NAK.Citronix.Validation.FarmValidation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -28,11 +31,15 @@ public class FarmServiceImpl implements FarmService {
 
     private final FarmMapper farmMapper;
 
+    private final FarmValidation farmValidation;
+
 
     @Override
     public ResponseFarmSharedDTO createFarm(CreateFarmDTO createFarmDTO) {
 
         Farm farm = farmMapper.toFarm(createFarmDTO);
+
+        farmValidation.validateFarm(farm);
 
         farm.setCreationDate(LocalDate.now());
 
@@ -48,6 +55,8 @@ public class FarmServiceImpl implements FarmService {
         Farm existedFarm = farmRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Farm with Id:" + id + " Not Found"));
 
         Farm updatedFarm = farmMapper.toFarm(updateFarmDTO);
+
+        farmValidation.validateFarm(updatedFarm);
 
         updatedFarm.setId(existedFarm.getId());
         updatedFarm.setCreationDate(existedFarm.getCreationDate());
@@ -65,13 +74,12 @@ public class FarmServiceImpl implements FarmService {
     }
 
     @Override
-    public List<ResponseFarmDTO> getFarms() {
+    public Page<ResponseFarmDTO> getFarms(Pageable pageable) {
 
-        return farmRepository.findAll()
-                .stream()
-                .map(farmMapper::toResponseFarmDTO)
-                .collect(Collectors.toList());
+        return farmRepository.findAll(pageable)
+                .map(farmMapper::toResponseFarmDTO);
     }
+
 
     @Override
     public void deleteFarm(Long id) {

@@ -15,7 +15,7 @@ public class CreateHarvestTreeDTO {
     private Long harvestId;
 
     @NotNull(message = "TreeId should not be null ")
-    private Long TreeId;
+    private Long treeId;
 
     @NotNull(message = "quantity should not be null ")
     private Double quantity;

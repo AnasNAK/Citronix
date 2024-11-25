@@ -48,6 +48,7 @@ public class SaleServiceImpl  implements SaleService {
         Sale sale = saleMapper.toSale(updateSaleDTO);
 
         sale.setHarvest(existedSale.getHarvest());
+        sale.setId(existedSale.getId());
         saleRepository.save(sale);
 
         return saleMapper.toResponseSaleDTO(sale);
@@ -66,7 +67,7 @@ public class SaleServiceImpl  implements SaleService {
         if (!saleRepository.existsById(id)) {
             throw new EntityNotFoundException("Sale with Id :"+ id +"not found");
         }
-        saleRepository.deleteById(id);
+        saleRepository.deleteByIdWithQuery(id);
 
     }
 

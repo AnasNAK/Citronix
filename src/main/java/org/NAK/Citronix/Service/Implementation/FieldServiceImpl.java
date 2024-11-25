@@ -12,6 +12,7 @@ import org.NAK.Citronix.Mapper.FieldMapper;
 import org.NAK.Citronix.Repository.FarmRepository;
 import org.NAK.Citronix.Repository.FieldRepository;
 import org.NAK.Citronix.Service.Contract.FieldService;
+import org.NAK.Citronix.Validation.FieldValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class FieldServiceImpl implements FieldService {
 
     private final FieldRepository fieldRepository;
     private final FarmRepository farmRepository;
-
+    private final FieldValidation fieldValidation;
     private final FieldMapper fieldMapper;
 
     @Override
@@ -34,6 +35,14 @@ public class FieldServiceImpl implements FieldService {
         Farm farm = farmRepository.findById(createFieldDTO.getFarmId()).orElseThrow(EntityNotFoundException::new);
 
         Field field = fieldMapper.toField(createFieldDTO);
+
+        Long farmId = farm.getId();
+
+        double currentFieldArea = fieldRepository.findAllByFarmId(farmId).stream()
+                .mapToDouble(Field::getArea)
+                .sum();
+
+        fieldValidation.validateFieldCreation(field, farm, currentFieldArea);
 
         field.setCreationDate(LocalDate.now());
         field.setFarm(farm);
@@ -52,6 +61,13 @@ public class FieldServiceImpl implements FieldService {
         Farm farm = farmRepository.findById(existedField.getFarm().getId()).orElseThrow(() -> new EntityNotFoundException("farm with Id :" +existedField.getFarm().getId()+"does not found" ));
 
         Field updatedField = fieldMapper.toField(updateFieldDTO);
+
+        double currentFieldArea = fieldRepository.findAllByFarmId(farm.getId()).stream()
+                .filter(f -> !f.getId().equals(existedField.getId()))
+                .mapToDouble(Field::getArea)
+                .sum();
+
+        fieldValidation.validateFieldUpdate(updatedField, farm, currentFieldArea);
 
         updatedField.setId(existedField.getId());
         updatedField.setFarm(farm);
