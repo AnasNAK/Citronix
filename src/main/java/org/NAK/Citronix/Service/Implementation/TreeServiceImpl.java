@@ -11,6 +11,7 @@ import org.NAK.Citronix.Mapper.TreeMapper;
 import org.NAK.Citronix.Repository.FieldRepository;
 import org.NAK.Citronix.Repository.TreeRepository;
 import org.NAK.Citronix.Service.Contract.TreeService;
+import org.NAK.Citronix.Validation.TreeValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public class TreeServiceImpl implements TreeService {
 
     private final FieldRepository fieldrepository;
 
+    private final TreeValidator treeValidator;
+
     private final TreeMapper treemapper;
 
 
@@ -35,6 +38,9 @@ public class TreeServiceImpl implements TreeService {
                 .orElseThrow(() -> new IllegalArgumentException("Field with Id :" + createTreeDTO.getFieldId()+ " not found"));
 
         Tree tree = treemapper.toTree(createTreeDTO);
+
+        treeValidator.validateTreeRequest(tree);
+        treeValidator.validateFieldCapacity(field);
 
         tree.setField(field);
         Tree savedTree =treerepository.save(tree);
@@ -48,6 +54,9 @@ public class TreeServiceImpl implements TreeService {
         Field field = fieldrepository.findById(existedTree.getField().getId()).orElseThrow(()-> new IllegalArgumentException("Field with Id :" + id + " not found"));
 
         Tree tree = treemapper.toTree(updateTreeDTO);
+
+        treeValidator.validateTreeRequest(tree);
+        treeValidator.validateFieldCapacity(field);
 
         tree.setField(field);
         tree.setId(existedTree.getId());
